@@ -13,12 +13,16 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [isError, setIsError] = useState(false)
 
-  useEffect(() => {
+  const getContacts = () => {
     contactService
-      .getAll()
-      .then(initialContacts => {
-        setContacts(initialContacts)
+    .getAll()
+    .then(contacts => {
+        setContacts(contacts)
       })
+  }
+
+  useEffect(() => {
+    getContacts()
   }, [])
 
   const addContact = e => {
@@ -32,21 +36,30 @@ const App = () => {
     const newContactObj = { name: newName, number: newNumber }
     contactService
     .create(newContactObj)
-    .then(newContact => {
+    .then((newContact) => {
       setContacts(contacts.concat(newContact))
-      setMessage(`Added contact ${newContact.name}`)
+      setIsError(false)
+      setMessage(`Added contact ${newName}`)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
       setNewName('')
       setNewNumber('')
     })
+    .catch(err => {
+      setMessage(`${err.response.data.error}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+      setIsError(true)
+      console.log(err.response.data.error)
+    })
   }
   
   const updateContact = contact => {
     if (window.confirm(`${contact.name}'s already in your contacts. Replace old ph# ?`)) {
-      const changeContactNumber = { ...contact, number: newNumber }
-      contactService.updateNumber(changeContactNumber.id, changeContactNumber)
+      const updatedContact = { ...contact, number: newNumber }
+      contactService.updateNumber(updatedContact.id, updatedContact)
       .then(updatedContact => {
         setContacts(
           contacts.map(c => c.id !== contact.id ? c : updatedContact))
@@ -58,7 +71,15 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
-      .catch( () => {
+      .catch(err => {
+        if (err.response.status === 400) {
+          setMessage(`${err.response.data.error}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+          setIsError(true)
+          return
+        }
         setContacts(contacts.filter(c => c.id !== contact.id))
         setMessage(`${contact.name} has already been deleted`)
         setTimeout(() => {
@@ -72,11 +93,10 @@ const App = () => {
   const deleteContact = contact => {
     if (window.confirm(`Are you sure you want to delete ${contact.name}?`)) {
       contactService.deleteContact(contact.id)
-      .then(deletedContact => {
-        setContacts(contacts.filter(c => c.id !== deletedContact.id))
+      .then(() => {
+        setContacts(contacts.filter(c => c.id !== contact.id))
       })
       .catch(() => {
-        setContacts(contacts.filter(c => c.id !== contact.id))
         setMessage(`${contact.name} has already been deleted`)
         setTimeout(() => {
           setMessage(null)
