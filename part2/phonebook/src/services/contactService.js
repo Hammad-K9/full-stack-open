@@ -1,24 +1,16 @@
-import axios from 'axios'
-const baseUrl = 'api/contacts'
+import axios from 'axios';
 
-const getResponseData = request => {
-  return request.then(response => response.data)
-}
+const baseUrl = 'api/contacts';
 
-const getAll = () => {
-  return getResponseData(axios.get(baseUrl))
-}
+const getResponseData = (request) => request.then((response) => response.data);
 
-const create = newObject => {
-  return getResponseData(axios.post(baseUrl, newObject))
-}
+const getAll = () => getResponseData(axios.get(baseUrl));
 
-const deleteContact = id => {
-  return getResponseData(axios.delete(`${baseUrl}/${id}`))
-}
+const create = (newObject) => getResponseData(axios.post(baseUrl, newObject));
 
-const updateNumber = (id, updatedContact) => {
-  return getResponseData(axios.put(`${baseUrl}/${id}`, updatedContact))
-}
+const deleteContact = (id) => getResponseData(axios.delete(`${baseUrl}/${id}`));
 
-export default { getAll, create, deleteContact, updateNumber }
+const updateNumber = (id, updatedContact) =>
+  getResponseData(axios.put(`${baseUrl}/${id}`, updatedContact));
+
+export default { getAll, create, deleteContact, updateNumber };

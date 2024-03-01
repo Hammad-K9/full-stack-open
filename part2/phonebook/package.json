@@ -10,6 +10,25 @@
     "preview": "vite preview",
     "server": "json-server -p3001 --watch db.json"
   },
+  "eslintConfig": {
+    "extends": [
+      "wesbos"
+    ],
+    "rules": {
+      "no-console": 0,
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "endOfLine": "auto",
+          "tabWidth": 2,
+          "trailingComma": "none"
+        }
+      ],
+      "no-plusplus": "off",
+      "import/no-extraneous-dependencies": "error"
+    }
+  },
   "dependencies": {
     "axios": "^1.6.7",
     "react": "^18.2.0",
@@ -23,6 +42,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-config-wesbos": "^4.0.1",
     "json-server": "^1.0.0-alpha.23",
     "vite": "^5.0.8"
   }
