@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import Notification from './components/Notification';
 import Login from './components/Login';
 import AddBlogForm from './components/AddBlogForm';
+import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import '../index.css';
@@ -58,9 +59,12 @@ const App = () => {
     setUser(null);
   };
 
+  const blogFormRef = useRef();
+
   const addBlog = (e) => {
     e.preventDefault();
     const newBlog = { title, author, url };
+    blogFormRef.current.toggleVisibility();
     blogService.create(newBlog).then((b) => {
       setBlogs(blogs.concat(b));
       setMessage(`a new blog ${b.title} by ${b.author} has been added`);
@@ -101,15 +105,17 @@ const App = () => {
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
-          <AddBlogForm
-            onSubmit={addBlog}
-            titleOnChange={(e) => setTitle(e.target.value)}
-            title={title}
-            authorOnChange={(e) => setAuthor(e.target.value)}
-            author={author}
-            urlOnChange={(e) => setUrl(e.target.value)}
-            url={url}
-          />
+          <Togglable buttonLabel="new blog" ref={blogFormRef}>
+            <AddBlogForm
+              onSubmit={addBlog}
+              titleOnChange={(e) => setTitle(e.target.value)}
+              title={title}
+              authorOnChange={(e) => setAuthor(e.target.value)}
+              author={author}
+              urlOnChange={(e) => setUrl(e.target.value)}
+              url={url}
+            />
+          </Togglable>
         </>
       )}
     </div>
