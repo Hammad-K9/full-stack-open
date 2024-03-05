@@ -18,7 +18,7 @@ const Login = (props) => (
           onChange={props.passwordOnChange}
         />
       </div>
-      <button type="submit">login</button>
+      <button>login</button>
     </form>
   </div>
 );

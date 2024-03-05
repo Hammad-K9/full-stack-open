@@ -15,9 +15,6 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
 
   useEffect(() => {
     blogService.getAll().then((list) => setBlogs(list));
@@ -61,20 +58,15 @@ const App = () => {
 
   const blogFormRef = useRef();
 
-  const addBlog = (e) => {
-    e.preventDefault();
-    const newBlog = { title, author, url };
+  const addBlog = (blogObj) => {
     blogFormRef.current.toggleVisibility();
-    blogService.create(newBlog).then((b) => {
+    blogService.create(blogObj).then((b) => {
       setBlogs(blogs.concat(b));
       setMessage(`a new blog ${b.title} by ${b.author} has been added`);
       setTimeout(() => {
         setMessage('');
       }, 5000);
       setIsError(false);
-      setTitle('');
-      setAuthor('');
-      setUrl('');
     });
   };
 
@@ -94,27 +86,15 @@ const App = () => {
           <h2>blogs</h2>
           <div className="logged-in">
             {user.name} is logged in
-            <button
-              className="logged-in-button"
-              type="submit"
-              onClick={handleLogout}
-            >
+            <button className="logged-in-button" onClick={handleLogout}>
               logout
             </button>
           </div>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} name={user.name} />
           ))}
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
-            <AddBlogForm
-              onSubmit={addBlog}
-              titleOnChange={(e) => setTitle(e.target.value)}
-              title={title}
-              authorOnChange={(e) => setAuthor(e.target.value)}
-              author={author}
-              urlOnChange={(e) => setUrl(e.target.value)}
-              url={url}
-            />
+            <AddBlogForm createBlog={addBlog} />
           </Togglable>
         </>
       )}
