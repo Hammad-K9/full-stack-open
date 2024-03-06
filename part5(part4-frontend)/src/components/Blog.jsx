@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
 
-const Blog = ({ blog, name, handleLikes }) => {
+const Blog = ({ blog, user, handleLikes, canDelete, deleteBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
   const blogStyle = {
     paddingTop: 5,
     paddingLeft: 2,
-    marginBottom: 5
+    margin: '15px 0'
   };
 
   return showDetails ? (
@@ -20,7 +20,8 @@ const Blog = ({ blog, name, handleLikes }) => {
           like
         </button>
       </div>
-      <div>{name}</div>
+      <div>{blog.user.name || user.name}</div>
+      {canDelete && <button onClick={() => deleteBlog(blog)}>delete</button>}
     </div>
   ) : (
     <div style={blogStyle}>

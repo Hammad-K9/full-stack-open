@@ -17,7 +17,10 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((list) => setBlogs(list));
+    blogService.getAll().then((list) => {
+      list.sort((a, b) => b.likes - a.likes);
+      setBlogs(list);
+    });
   }, []);
 
   useEffect(() => {
@@ -74,12 +77,27 @@ const App = () => {
     blogService
       .update({ ...blog, likes: blog.likes + 1 }, blog.id)
       .then((response) => {
+        // console.log(response);
         setBlogs(
-          blogs.map((b) =>
-            b.id === blog.id ? { ...b, likes: response.likes } : b
-          )
+          blogs
+            .map((b) =>
+              b.id === blog.id ? { ...b, likes: response.likes } : b
+            )
+            .sort((a, b) => b.likes - a.likes)
         );
       });
+  };
+
+  const deleteBlog = (blog) => {
+    if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
+      blogService.deleteBlog(blog.id).then(() => {
+        setBlogs(
+          blogs
+            .filter((b) => b.id !== blog.id)
+            .sort((a, b) => b.likes - a.likes)
+        );
+      });
+    }
   };
 
   return (
@@ -102,12 +120,15 @@ const App = () => {
               logout
             </button>
           </div>
+          {console.log(blogs)}
           {blogs.map((blog) => (
             <Blog
               key={blog.id}
               blog={blog}
-              name={user.name}
+              user={user}
               handleLikes={handleLikes}
+              canDelete={blog.user && blog.user.username === user.username}
+              deleteBlog={deleteBlog}
             />
           ))}
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
