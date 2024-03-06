@@ -70,6 +70,18 @@ const App = () => {
     });
   };
 
+  const handleLikes = (blog) => {
+    blogService
+      .update({ ...blog, likes: blog.likes + 1 }, blog.id)
+      .then((response) => {
+        setBlogs(
+          blogs.map((b) =>
+            b.id === blog.id ? { ...b, likes: response.likes } : b
+          )
+        );
+      });
+  };
+
   return (
     <div>
       <Notification message={message} isError={isError} />
@@ -91,7 +103,12 @@ const App = () => {
             </button>
           </div>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} name={user.name} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              name={user.name}
+              handleLikes={handleLikes}
+            />
           ))}
           <Togglable buttonLabel="new blog" ref={blogFormRef}>
             <AddBlogForm createBlog={addBlog} />
