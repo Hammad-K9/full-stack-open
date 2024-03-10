@@ -77,7 +77,6 @@ const App = () => {
     blogService
       .update({ ...blog, likes: blog.likes + 1 }, blog.id)
       .then((response) => {
-        // console.log(response);
         setBlogs(
           blogs
             .map((b) =>

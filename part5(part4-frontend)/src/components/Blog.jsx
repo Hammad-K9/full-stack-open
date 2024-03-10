@@ -10,7 +10,7 @@ const Blog = ({ blog, user, handleLikes, canDelete, deleteBlog }) => {
   };
 
   return showDetails ? (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       {blog.title} {blog.author}{' '}
       <button onClick={() => setShowDetails(false)}>hide</button>
       <div>{blog.url}</div>
@@ -24,7 +24,7 @@ const Blog = ({ blog, user, handleLikes, canDelete, deleteBlog }) => {
       {canDelete && <button onClick={() => deleteBlog(blog)}>delete</button>}
     </div>
   ) : (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       {blog.title} {blog.author}{' '}
       <button onClick={() => setShowDetails(true)}>view</button>
     </div>
