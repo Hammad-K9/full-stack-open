@@ -26,7 +26,7 @@ const Blog = ({ blog, user, handleLikes, deleteBlog }) => {
       as seen in the backend post request for adding blogs). On the right side 
       of the || comparison, if blogs.user contains the user object, then you 
       simply compare both IDs */}
-      {(user.id === blog.user || user.id === blog.user.id) && (
+      {user && (user.id === blog.user || user.id === blog.user.id) && (
         <button onClick={() => deleteBlog(blog)}>delete</button>
       )}
     </div>
