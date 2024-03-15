@@ -119,14 +119,12 @@ const App = () => {
               logout
             </button>
           </div>
-          {console.log(blogs)}
           {blogs.map((blog) => (
             <Blog
               key={blog.id}
               blog={blog}
               user={user}
               handleLikes={handleLikes}
-              canDelete={blog.user && blog.user.username === user.username}
               deleteBlog={deleteBlog}
             />
           ))}
