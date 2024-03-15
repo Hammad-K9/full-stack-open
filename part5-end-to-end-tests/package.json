@@ -1,0 +1,43 @@
+{
+  "name": "full-stack-open",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.27"
+  },
+  "eslintConfig": {
+    "extends": [
+      "wesbos"
+    ],
+    "rules": {
+      "no-console": 0,
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "endOfLine": "auto",
+          "tabWidth": 2,
+          "trailingComma": "none"
+        }
+      ],
+      "no-plusplus": "off",
+      "no-prototype-builtins": 0,
+      "react/prop-types": 0,
+      "react/destructuring-assignment": 0,
+      "react/button-has-type": 0,
+      "import/no-extraneous-dependencies": 0
+    }
+  },
+  "dependencies": {
+    "eslint-config-wesbos": "^4.0.1"
+  }
+}
